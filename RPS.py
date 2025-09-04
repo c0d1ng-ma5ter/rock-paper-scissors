@@ -32,7 +32,7 @@ def player(prev_play, opponent_history=[]):
             guess = random.choice("RPS")
             return guess
 
-        if rocks > scissorsssss and papers > scissorsssss: # Detect if Quincy is playing
+        if rocks > scissorsssss and papers > scissorsssss: # Detect Quincy-like players
 
             # This strat works oddly well against him, but not against other bots  
             memory = random.choice(history)
