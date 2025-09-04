@@ -1,4 +1,4 @@
-# The example function below keeps track of the opponent's history and plays whatever the opponent played two plays ago. It is not a very good player so you will need to change the code to pass the challenge.
+# Neural networks? What's a neural network? This is just if statemets and random stuff!
 
 import random
 
@@ -6,13 +6,14 @@ def player(prev_play, opponent_history=[]):
     opponent_history.append(prev_play)
     guess = "P"
 
-    if random.random() > 0.5:
+    if random.random() > 0.7:
         guess = random.choice("RPS")
     elif random.random() > 0.5 and len(opponent_history) > 1:
         history = ""
-        rocks = random.random() * 2
-        papers = random.random() * 2
-        scissorsssss = random.random() * 2
+        total = 0
+        rocks = 0
+        papers = 0
+        scissorsssss = 0
 
         for play in opponent_history:
             history = history + play
@@ -24,14 +25,16 @@ def player(prev_play, opponent_history=[]):
             else:
                 scissorsssss += 1
 
-        if random.random() > 0.1:
-            if rocks > papers and rocks > scissorsssss:
-                guess = "P"
-            elif papers > rocks and papers > scissorsssss:
-                guess = "S"
-            elif scissorsssss > papers and scissorsssss > rocks:
-                guess = "R"
-        else:
+        #print(rocks, papers, scissorsssss)
+
+        if abs(rocks - papers) <= 50 and abs(papers - scissorsssss) <= 50:
+            # Fight random players with random playing
+            guess = random.choice("RPS")
+            return guess
+
+        if rocks > scissorsssss and papers > scissorsssss: # Detect if Quincy is playing
+
+            # This strat works oddly well against him, but not against other bots  
             memory = random.choice(history)
             if memory == "R":
                 guess = "S"
@@ -39,6 +42,15 @@ def player(prev_play, opponent_history=[]):
                 guess = "R"
             else:
                 guess = "P"
+
+        else:
+            # This strategy is kinda mediocre, but works against all bots
+            if rocks > papers and rocks > scissorsssss:
+                guess = "P"
+            elif papers > rocks and papers > scissorsssss:
+                guess = "S"
+            elif scissorsssss > papers and scissorsssss > rocks:
+                guess = "R"
     
 
     return guess
