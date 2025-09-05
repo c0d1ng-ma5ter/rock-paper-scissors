@@ -2,8 +2,10 @@
 
 import random
 
-def player(prev_play, opponent_history=[]):
+def player(prev_play, opponent_history=[], counter=[0], kris_counter=[0], player_history=[]):
     opponent_history.append(prev_play)
+    ideal_response = {"R": "P", "P": "S", "S": "R"}
+    counter[0] += 1
     guess = "P"
 
     if random.random() > 0.7:
@@ -27,24 +29,17 @@ def player(prev_play, opponent_history=[]):
 
         #print(rocks, papers, scissorsssss)
 
-        if abs(rocks - papers) <= 50 and abs(papers - scissorsssss) <= 50:
-            # Fight random players with random playing
-            guess = random.choice("RPS")
-            return guess
+        if opponent_history[:10] == ['', 'R', 'P', 'P', 'S', 'R', 'R', 'P', 'P', 'S'] and rocks > scissorsssss: # Detect when Quincy is playing
+            
+            choices = ["P", "P", "S", "S", "R"] # Perfect anti-Quincy counterplay
+            guess = choices[counter[0] % len(choices)]
 
-        if rocks > scissorsssss and papers > scissorsssss: # Detect Quincy-like players
-
-            # This strat works oddly well against him, but not against other bots  
-            memory = random.choice(history)
-            if memory == "R":
-                guess = "S"
-            elif prev_play == "P":
-                guess = "R"
-            else:
-                guess = "P"
-
+        elif len(player_history) > 1 and prev_play == ideal_response[player_history[-1]]: # Detect if Kris is playing
+            kris_counter[0] += 1 # Raise our suspicions it's Kris
+            if kris_counter[0] > 3: # IT'S KRIS
+                guess = ideal_response[ideal_response[player_history[-1]]]
         else:
-            # This strategy is kinda mediocre, but works against all bots
+            # This strategy is kinda mediocre, but works against all bots consistently
             if rocks > papers and rocks > scissorsssss:
                 guess = "P"
             elif papers > rocks and papers > scissorsssss:
@@ -52,5 +47,5 @@ def player(prev_play, opponent_history=[]):
             elif scissorsssss > papers and scissorsssss > rocks:
                 guess = "R"
     
-
+    player_history.append(guess)
     return guess
